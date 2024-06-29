@@ -58,9 +58,21 @@ const deleteMovie = async (req, res) => {
   }
 };
 
+// Count movies by language
+const countMoviesByLanguage = async (req, res) => {
+  const { language } = req.query;
+  try {
+    const count = await Movie.countDocuments({ language });
+    res.json({success:true, language, count });
+  } catch (error) {
+    res.status(500).json({success:false, error: error.message });
+  }
+};
+
 module.exports = {
   getAllMovies,
   addMovie,
   updateMovie,
   deleteMovie,
+  countMoviesByLanguage,
 };
