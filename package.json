@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [],
   "author": "",
@@ -14,5 +16,8 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mongoose": "^8.4.4"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.2"
   }
 }

@@ -6,8 +6,8 @@ const getAllMovies = async (req, res) => {
     const movies = await Movie.find();
     res.status(200).json({
       success: true,
-      message: "Movies Retrieved Succesfully",
-      movies 
+      message: 'Movies Retrieved Succesfully',
+      movies,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -18,12 +18,18 @@ const getAllMovies = async (req, res) => {
 const addMovie = async (req, res) => {
   const { title, director, releaseYear, language, rating } = req.body;
   try {
-    const newMovie = new Movie({ title, director, releaseYear, language, rating });
+    const newMovie = new Movie({
+      title,
+      director,
+      releaseYear,
+      language,
+      rating,
+    });
     await newMovie.save();
     res.status(201).json({
       success: true,
-      message: "Movie Created Successfully",
-      movie: newMovie
+      message: 'Movie Created Successfully',
+      movie: newMovie,
     });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
@@ -34,13 +40,18 @@ const addMovie = async (req, res) => {
 const updateMovie = async (req, res) => {
   const { id } = req.params;
   try {
-    const updatedMovie = await Movie.findByIdAndUpdate(id, req.body, { new: true });
-    if (!updatedMovie) return res.status(404).json({ success: false, message: 'Movie not found' });
+    const updatedMovie = await Movie.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    if (!updatedMovie)
+      return res
+        .status(404)
+        .json({ success: false, message: 'Movie not found' });
     res.status(200).json({
       success: true,
-      message: "Movie Updated Successfully",
-      movie: updatedMovie
-    });;
+      message: 'Movie Updated Successfully',
+      movie: updatedMovie,
+    });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
   }
@@ -51,7 +62,10 @@ const deleteMovie = async (req, res) => {
   const { id } = req.params;
   try {
     const deletedMovie = await Movie.findByIdAndDelete(id);
-    if (!deletedMovie) return res.status(404).json({ success: false, message: 'Movie not found' });
+    if (!deletedMovie)
+      return res
+        .status(404)
+        .json({ success: false, message: 'Movie not found' });
     res.json({ success: true, message: 'Movie deleted successfully' });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -63,9 +77,9 @@ const countMoviesByLanguage = async (req, res) => {
   const { language } = req.query;
   try {
     const count = await Movie.countDocuments({ language });
-    res.json({success:true, language, count });
+    res.json({ success: true, language, count });
   } catch (error) {
-    res.status(500).json({success:false, error: error.message });
+    res.status(500).json({ success: false, error: error.message });
   }
 };
 
@@ -74,14 +88,17 @@ const searchMovie = async (req, res) => {
   const { title } = req.params;
   try {
     const movie = await Movie.findOne({ title });
-    if (!movie) return res.status(404).json({success:false, message: 'Movie not found' });
+    if (!movie)
+      return res
+        .status(404)
+        .json({ success: false, message: 'Movie not found' });
     res.status(200).json({
       success: true,
-      message: "Movie Retrieved Successfully",
-      movie
+      message: 'Movie Retrieved Successfully',
+      movie,
     });
   } catch (error) {
-    res.status(500).json({success:false, error: error.message });
+    res.status(500).json({ success: false, error: error.message });
   }
 };
 
@@ -100,21 +117,21 @@ const filterMovies = async (req, res) => {
     if (Object.keys(filter).length === 0) {
       return res.status(400).json({
         success: false,
-        message: "No filter criteria provided. Please specify at least one filter.",
+        message:
+          'No filter criteria provided. Please specify at least one filter.',
       });
     }
 
     const movies = await Movie.find(filter);
     res.json({
       success: true,
-      message: "Movies retrieved successfully",
+      message: 'Movies retrieved successfully',
       movies,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 module.exports = {
   getAllMovies,
@@ -123,5 +140,5 @@ module.exports = {
   deleteMovie,
   countMoviesByLanguage,
   searchMovie,
-  filterMovies
+  filterMovies,
 };
