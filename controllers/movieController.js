@@ -69,10 +69,59 @@ const countMoviesByLanguage = async (req, res) => {
   }
 };
 
+// Search for a movie by title
+const searchMovie = async (req, res) => {
+  const { title } = req.params;
+  try {
+    const movie = await Movie.findOne({ title });
+    if (!movie) return res.status(404).json({success:false, message: 'Movie not found' });
+    res.status(200).json({
+      success: true,
+      message: "Movie Retrieved Successfully",
+      movie
+    });
+  } catch (error) {
+    res.status(500).json({success:false, error: error.message });
+  }
+};
+
+// Filter movies
+const filterMovies = async (req, res) => {
+  const { title, director, releaseYear, language, rating } = req.query;
+  const filter = {};
+
+  if (title) filter.title = title;
+  if (director) filter.director = director;
+  if (releaseYear) filter.releaseYear = parseInt(releaseYear);
+  if (language) filter.language = language;
+  if (rating) filter.rating = parseFloat(rating);
+
+  try {
+    if (Object.keys(filter).length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No filter criteria provided. Please specify at least one filter.",
+      });
+    }
+
+    const movies = await Movie.find(filter);
+    res.json({
+      success: true,
+      message: "Movies retrieved successfully",
+      movies,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   getAllMovies,
   addMovie,
   updateMovie,
   deleteMovie,
   countMoviesByLanguage,
+  searchMovie,
+  filterMovies
 };

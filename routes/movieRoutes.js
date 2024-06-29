@@ -7,5 +7,7 @@ router.post('/', movieController.addMovie);
 router.put('/:id', movieController.updateMovie);
 router.delete('/:id', movieController.deleteMovie);
 router.get('/count', movieController.countMoviesByLanguage);
+router.get('/search/:title', movieController.searchMovie);
+router.get('/filter', movieController.filterMovies);
 
 module.exports = router;
