@@ -22,8 +22,25 @@ const addMovie = async (req, res) => {
     await newMovie.save();
     res.status(201).json({
       success: true,
-      message: "Movie Created Successfully"
+      message: "Movie Created Successfully",
+      movie: newMovie
     });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// Update a movie
+const updateMovie = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updatedMovie = await Movie.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updatedMovie) return res.status(404).json({ message: 'Movie not found' });
+    res.status(200).json({
+      success: true,
+      message: "Movie Updated Successfully",
+      movie: updatedMovie
+    });;
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -32,4 +49,5 @@ const addMovie = async (req, res) => {
 module.exports = {
   getAllMovies,
   addMovie,
+  updateMovie,
 };
