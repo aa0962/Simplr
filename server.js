@@ -11,6 +11,9 @@ connectDB();
 // Middleware
 app.use(express.json());
 
+// Routes
+app.use('/api/movies', movieRoutes);
+
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
