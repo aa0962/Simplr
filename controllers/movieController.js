@@ -26,7 +26,7 @@ const addMovie = async (req, res) => {
       movie: newMovie
     });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ success: false, error: error.message });
   }
 };
 
@@ -35,14 +35,26 @@ const updateMovie = async (req, res) => {
   const { id } = req.params;
   try {
     const updatedMovie = await Movie.findByIdAndUpdate(id, req.body, { new: true });
-    if (!updatedMovie) return res.status(404).json({ message: 'Movie not found' });
+    if (!updatedMovie) return res.status(404).json({ success: false, message: 'Movie not found' });
     res.status(200).json({
       success: true,
       message: "Movie Updated Successfully",
       movie: updatedMovie
     });;
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ success: false, error: error.message });
+  }
+};
+
+// Delete a movie
+const deleteMovie = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedMovie = await Movie.findByIdAndDelete(id);
+    if (!deletedMovie) return res.status(404).json({ success: false, message: 'Movie not found' });
+    res.json({ success: true, message: 'Movie deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
   }
 };
 
@@ -50,4 +62,5 @@ module.exports = {
   getAllMovies,
   addMovie,
   updateMovie,
+  deleteMovie,
 };
