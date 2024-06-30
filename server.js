@@ -1,6 +1,7 @@
 const express = require('express');
 const connectDB = require('./config/db');
 const movieRoutes = require('./routes/movieRoutes');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
@@ -9,6 +10,7 @@ const app = express();
 connectDB();
 
 // Middleware
+app.use(cors());
 app.use(express.json());
 
 // Routes

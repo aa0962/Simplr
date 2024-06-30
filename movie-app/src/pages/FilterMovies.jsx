@@ -28,34 +28,25 @@ function FilterMovies() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Filter Movies</h1>
-      <form onSubmit={handleFilter} className="space-y-4">
-        <div>
-          <label className="block">Title</label>
-          <input type="text" name="title" value={filters.title} onChange={handleChange} className="border p-2 w-full" />
-        </div>
-        <div>
-          <label className="block">Director</label>
-          <input type="text" name="director" value={filters.director} onChange={handleChange} className="border p-2 w-full" />
-        </div>
-        <div>
-          <label className="block">Release Year</label>
-          <input type="number" name="releaseYear" value={filters.releaseYear} onChange={handleChange} className="border p-2 w-full" />
-        </div>
-        <div>
-          <label className="block">Language</label>
-          <input type="text" name="language" value={filters.language} onChange={handleChange} className="border p-2 w-full" />
-        </div>
-        <div>
-          <label className="block">Rating</label>
-          <input type="number" step="0.1" name="rating" value={filters.rating} onChange={handleChange} className="border p-2 w-full" />
-        </div>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Filter Movies</button>
+      <h1 className="text-3xl font-bold mb-6">Filter Movies</h1>
+      <form onSubmit={handleFilter} className="bg-secondary p-6 rounded-lg shadow-lg space-y-4">
+        {['title', 'director', 'releaseYear', 'language', 'rating'].map((field) => (
+          <div key={field}>
+            <label className="block mb-1 capitalize">{field}</label>
+            <input
+              type={field === 'releaseYear' || field === 'rating' ? 'number' : 'text'}
+              name={field}
+              value={filters[field]}
+              onChange={handleChange}
+              className="w-full p-2 rounded bg-gray-800 text-white"
+            />
+          </div>
+        ))}
+        <button type="submit" className="bg-primary px-4 py-2 rounded text-white">Filter Movies</button>
       </form>
-      <div className="mt-4">
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {filteredMovies.map((movie) => (
-          <MovieCard key={movie._id} movie={movie}
-          />
+          <MovieCard key={movie._id} movie={movie} />
         ))}
       </div>
     </div>

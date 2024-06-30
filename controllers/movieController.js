@@ -87,20 +87,20 @@ const countMoviesByLanguage = async (req, res) => {
 const searchMovie = async (req, res) => {
   const { title } = req.params;
   try {
-    const movie = await Movie.findOne({ title });
-    if (!movie)
-      return res
-        .status(404)
-        .json({ success: false, message: 'Movie not found' });
+    const movies = await Movie.find({ title: { $regex: title, $options: 'i' } });
+    if (movies.length === 0) {
+      return res.status(404).json({ success: false, message: 'No movies found matching the title' });
+    }
     res.status(200).json({
       success: true,
-      message: 'Movie Retrieved Successfully',
-      movie,
+      message: 'Movies Retrieved Successfully',
+      movies,
     });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
 
 // Filter movies
 const filterMovies = async (req, res) => {
@@ -133,6 +133,21 @@ const filterMovies = async (req, res) => {
   }
 };
 
+// Get movie by id
+const getMovieById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const movie = await Movie.findById(id);
+    if (!movie) {
+      return res.status(404).json({ success: false, message: 'Movie not found' });
+    }
+    res.status(200).json({ success: true, message: 'Movie retrieved successfully', movie });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 module.exports = {
   getAllMovies,
   addMovie,
@@ -141,4 +156,5 @@ module.exports = {
   countMoviesByLanguage,
   searchMovie,
   filterMovies,
+  getMovieById,
 };

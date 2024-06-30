@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*added by aryan*/
+
+body {
+  @apply bg-background text-textLight dark:bg-darkBackground dark:text-textDark;
+}
+
+h1, h2, h3 {
+  color: theme('colors.primary');
+}
+
+button {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+button:hover {
+  background-color: theme('colors.accent');
+}
