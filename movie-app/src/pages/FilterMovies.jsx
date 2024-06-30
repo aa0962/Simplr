@@ -32,7 +32,7 @@ function FilterMovies() {
       <form onSubmit={handleFilter} className="bg-secondary p-6 rounded-lg shadow-lg space-y-4">
         {['title', 'director', 'releaseYear', 'language', 'rating'].map((field) => (
           <div key={field}>
-            <label className="block mb-1 capitalize">{field}</label>
+            <label className="block mb-1 capitalize text-orange-700">{field}</label>
             <input
               type={field === 'releaseYear' || field === 'rating' ? 'number' : 'text'}
               name={field}

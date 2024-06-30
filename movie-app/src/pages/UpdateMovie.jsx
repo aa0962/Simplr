@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { updateMovie, getMovie } from '../api';
 
 const UpdateMovie = () => {
-  const { id } = useParams(); // Get movie ID from URL params
-
+  const { id } = useParams();
+  const navigate = useNavigate();
+  
   const [movie, setMovie] = useState({
     title: '',
     director: '',
@@ -16,13 +18,14 @@ const UpdateMovie = () => {
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const response = await getMovie(id); // Fetch movie details by ID
+        const response = await getMovie(id);
         setMovie(response.data.movie);
       } catch (error) {
         console.error('Error fetching movie:', error);
+        toast.error('Failed to fetch movie details.');
       }
     };
-
+    
     fetchMovie();
   }, [id]);
 
@@ -33,11 +36,12 @@ const UpdateMovie = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateMovie(id, movie); // Update movie with new details
-      // Redirect to home page or another route after successful update
-      window.location.href = '/'; // Example: Redirecting to home page
+      await updateMovie(id, movie);
+      toast.success('Movie updated successfully!');
+      navigate('/');
     } catch (error) {
       console.error('Error updating movie:', error);
+      toast.error('Failed to update movie.');
     }
   };
 

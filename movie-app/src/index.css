@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/*added by aryan*/
-
 body {
   @apply bg-background text-textLight dark:bg-darkBackground dark:text-textDark;
 }
